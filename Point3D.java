@@ -2,8 +2,6 @@ package lab4;
 
 public class Point3D extends Point
 {
-    double x;
-    double y;
     double z;
 
     public Point3D(double x, double y, double z)
@@ -15,13 +13,14 @@ public class Point3D extends Point
     @Override
     public double distance(Point other)
     {
-        if (!(other instanceof Point3D))
+        if (other instanceof Point3D p3)
         {
-            throw new IllegalArgumentException("Distance requires another 3D point.");
+            return Math.sqrt(Math.pow(x - p3.x, 2) + Math.pow(y - p3.y, 2) + Math.pow(z - p3.z, 2));
         }
-
-        Point3D p = (Point3D) other;
-        return Math.sqrt(Math.pow(x - p.x, 2) + Math.pow(y - p.y, 2) + Math.pow(z - p.z, 2));
+        else
+        {
+            return Math.sqrt(Math.pow(x - other.x, 2) + Math.pow(y - other.y, 2) + Math.pow(z, 2));
+        }
     }
 
     @Override
