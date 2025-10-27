@@ -17,7 +17,7 @@ public class Point3D extends Point
         {
             return Math.sqrt(Math.pow(x - p3.x, 2) + Math.pow(y - p3.y, 2) + Math.pow(z - p3.z, 2));
         }
-        else
+        else //allows comparison between 2D and 3D points
         {
             return Math.sqrt(Math.pow(x - other.x, 2) + Math.pow(y - other.y, 2) + Math.pow(z, 2));
         }
