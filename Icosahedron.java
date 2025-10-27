@@ -1,15 +1,13 @@
 package lab4;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 //only defines regular icosahedra
 public class Icosahedron
 {
     ArrayList<Point3D> vertices;
     final double tolerance = 1e-8;
-    double edgeLength;
+    double edgeLength = 0;
 
     //anything that is not a regular icosahedron will throw an exception during construction
     public Icosahedron(ArrayList<Point3D> vertices) throws Exception
@@ -19,7 +17,7 @@ public class Icosahedron
             throw new Exception("Icosahedra must have 12 vertices.");
         }
 
-        this.vertices = vertices;
+        this.vertices = new ArrayList<>(vertices);
 
         if(!this.checkValidity())
         {
@@ -30,23 +28,30 @@ public class Icosahedron
     public boolean checkValidity()
     {
         //get all point distances
-        List<Double> distances = new ArrayList<Double>();
+        ArrayList<Double> distances = new ArrayList<>();
         for(int i = 0; i < this.vertices.size(); i++)
         {
             for(int j = i + 1; j < this.vertices.size(); j++)
             {
-                distances.add(this.vertices.get(i).distance(this.vertices.get(j)));
+                double distance = vertices.get(i).distance(vertices.get(j));
+
+                if (distance < tolerance)
+                {
+                    return false; // explicit duplicate check
+                }
+
+                distances.add(distance);
             }
         }
 
         //a regular icosahedron should have three unique distances
-        List<Double> uniqueDistances = new ArrayList<Double>();
+        ArrayList<Double> uniqueDistances = new ArrayList<Double>();
         for(int i = 0; i < distances.size(); i++)
         {
             boolean uniqueFound = false;
             for(int j = 0; j < uniqueDistances.size(); j++)
             {
-                if(Math.abs(distances.get(j) - uniqueDistances.get(i)) < tolerance)
+                if(Math.abs(distances.get(i) - uniqueDistances.get(j)) < tolerance)
                 {
                     uniqueFound = true;
                     break;
@@ -64,7 +69,7 @@ public class Icosahedron
         }
 
         //each vertex must connect to five others with the smallest unique distance
-        this.edgeLength = Collections.min(uniqueDistances);
+        this.edgeLength = java.util.Collections.min(uniqueDistances);
 
         for (int i = 0; i < vertices.size(); i++)
         {
@@ -96,6 +101,7 @@ public class Icosahedron
         //any set of points following these criteria SHOULD form a regular icosahedron
         return true;
     }
+
 
     public double surfaceArea()
     {
